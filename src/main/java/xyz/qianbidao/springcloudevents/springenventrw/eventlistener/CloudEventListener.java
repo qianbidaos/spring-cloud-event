@@ -31,9 +31,14 @@ public class CloudEventListener {
         eventHandles.forEach(eventHandle -> {
             if(e.getType().equals(eventHandle.getType().getName())){
                 try {
-
                     Class<?> clazz = Class.forName(e.getType());
-                    eventHandle.handle(JSON.parseObject(String.valueOf(e.getData()), clazz));
+                    if(clazz.isAssignableFrom(eventHandle.getType())){
+                        if(null==e.getDataContentType()){
+                            eventHandle.handle(e);
+                        }else {
+                            eventHandle.handle(JSON.parseObject(String.valueOf(e.getData()), clazz));
+                        }
+                    }
                 } catch (ClassNotFoundException ex) {
                     ex.printStackTrace();
                 }

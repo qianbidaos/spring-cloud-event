@@ -58,14 +58,14 @@ public class SpringEventToCloudEventHandle implements ApplicationListener {
 
         if(event instanceof ApplicationCloudJSONDataEvent){
             byte[] data = ((ApplicationCloudJSONDataEvent) event).getData();
-            if(null!=data){
+            if (null != data) {
                 cloudEventBuilder
                     .withData(data)
                     .withDataContentType(MimeTypeUtils.APPLICATION_JSON_VALUE)
                 ;
             }
         }else {
-//            cloudEventBuilder.withDataContentType(MimetypesFileTypeMap);
+            cloudEventBuilder.withDataContentType(null);
         }
         CloudEvent cloudEvent = cloudEventBuilder
                 .withSubject("qianbidao boot event")

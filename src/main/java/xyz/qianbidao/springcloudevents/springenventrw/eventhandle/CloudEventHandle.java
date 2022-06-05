@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class CloudEventHandle implements EventHandle<ContextClosedEvent>{
+public class CloudEventHandle implements EventHandle<CloudEvent>{
 
     @Override
     public Class getType() {
@@ -18,8 +18,8 @@ public class CloudEventHandle implements EventHandle<ContextClosedEvent>{
     }
 
     @Override
-    public void handle(ContextClosedEvent cloudEvent) {
-        log.info("cloudEvent {}", JSON.toJSONString(cloudEvent));
+    public void handle(CloudEvent cloudEvent) {
+        log.info("cloudEvent {}", cloudEvent);
     }
 
 }
