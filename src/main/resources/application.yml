@@ -1,0 +1,6 @@
+cloudevent:
+  applicationSource: xyz.qianbidao.events
+spring:
+  rabbitmq:
+    host: 61.183.41.134
+    port: 5673
