@@ -15,17 +15,24 @@ import org.springframework.stereotype.Component;
  */
 @Getter
 public class ApplicationCloudJSONDataEvent extends ApplicationEvent {
-    private byte[] data;
-    public ApplicationCloudJSONDataEvent(Object source, byte[] bytes) {
-        super(source);
-        this.data=bytes;
+    private String jsonData = new String();
+
+    public ApplicationCloudJSONDataEvent(Object source, String bytes) {
+        super(source==null?ApplicationCloudJSONDataEvent.class:source);
+        this.jsonData=bytes;
     }
 
     public ApplicationCloudJSONDataEvent(Object source) {
         super(source);
     }
 
-    public void setData(byte[] data) {
-        this.data = data;
+    public void setData(String data) {
+        if(null!=data){
+            this.jsonData = data;
+        }
+    }
+
+    public String getData() {
+        return jsonData;
     }
 }

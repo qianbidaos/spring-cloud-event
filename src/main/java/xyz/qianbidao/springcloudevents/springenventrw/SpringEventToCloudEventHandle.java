@@ -22,7 +22,9 @@ import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * @auther 铅笔刀
@@ -43,6 +45,16 @@ public class SpringEventToCloudEventHandle implements ApplicationListener {
         cloudEventSenders = applicationContext.getBeansOfType(CloudEventSender.class).values();
     }
 
+    byte[] toPrimitives(Byte[] oBytes){
+
+        byte[] bytes = new byte[oBytes.length];
+        for(int i = 0; i < oBytes.length; i++){
+            bytes[i] = oBytes[i];
+        }
+        return bytes;
+
+    }
+
     @SneakyThrows
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
@@ -57,10 +69,10 @@ public class SpringEventToCloudEventHandle implements ApplicationListener {
                 .withId(IdUtil.objectId());
 
         if(event instanceof ApplicationCloudJSONDataEvent){
-            byte[] data = ((ApplicationCloudJSONDataEvent) event).getData();
+            String data = ((ApplicationCloudJSONDataEvent) event).getData();
             if (null != data) {
                 cloudEventBuilder
-                    .withData(data)
+                    .withData(data.getBytes(StandardCharsets.UTF_8))
                     .withDataContentType(MimeTypeUtils.APPLICATION_JSON_VALUE)
                 ;
             }

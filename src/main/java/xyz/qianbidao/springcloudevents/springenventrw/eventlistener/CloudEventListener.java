@@ -1,6 +1,6 @@
 package xyz.qianbidao.springcloudevents.springenventrw.eventlistener;
 
-import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson.JSON;
 import io.cloudevents.CloudEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -29,20 +29,30 @@ public class CloudEventListener {
 
     public void handle(CloudEvent e){
         eventHandles.forEach(eventHandle -> {
-            if(e.getType().equals(eventHandle.getType().getName())){
-                try {
-                    Class<?> clazz = Class.forName(e.getType());
-                    if(clazz.isAssignableFrom(eventHandle.getType())){
-                        if(null==e.getDataContentType()){
-                            eventHandle.handle(e);
-                        }else {
-                            eventHandle.handle(JSON.parseObject(String.valueOf(e.getData()), clazz));
-                        }
+            if (eventHandle.getKey() != null) {
+                if(eventHandle.getKey().equals(e.getType())){
+                    if (null == e.getDataContentType()) {
+                        eventHandle.handle(e);
+                    }else {
+                        eventHandle.handle(JSON.parseObject(new String(e.getData().toBytes())).toJavaObject(eventHandle.getType()));
                     }
-                } catch (ClassNotFoundException ex) {
-                    ex.printStackTrace();
                 }
-            };
+            }else if (eventHandle.getType() != null) {
+                Class<?> clazz = null;
+                try {
+                    clazz = Class.forName(e.getType());
+                } catch (ClassNotFoundException ex) {
+                    return;
+                }
+                if (clazz.isAssignableFrom(eventHandle.getType())) {
+                    if (null == e.getDataContentType()) {
+                        eventHandle.handle(e);
+                    } else {
+                        eventHandle.handle(JSON.parseObject(new String(e.getData().toBytes())).toJavaObject(clazz));
+                    }
+                }
+            }
+
         });
     }
 

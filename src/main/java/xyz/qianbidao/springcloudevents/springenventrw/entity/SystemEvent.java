@@ -10,9 +10,7 @@ import org.springframework.context.ApplicationEvent;
  */
 @Getter
 public class SystemEvent extends ApplicationEvent {
-    private byte[] data;
-    public SystemEvent(Object source, byte[] bytes) {
+    public SystemEvent(Object source) {
         super(source);
-        this.data=bytes;
     }
 }
