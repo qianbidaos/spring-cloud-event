@@ -31,7 +31,7 @@ public class RabbitMQSender implements CloudEventSender {
                         EventFormatProvider
                                 .getInstance()
                                 .resolveFormat(JsonFormat.CONTENT_TYPE)
-                                .serialize(cloudEvent))
-        );
+                                .serialize(cloudEvent)));
+
     }
 }

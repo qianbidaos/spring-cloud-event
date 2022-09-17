@@ -16,7 +16,6 @@ import xyz.qianbidao.springcloudevents.springenventrw.entity.SpringCloudEventsCo
  */
 @Slf4j
 @RabbitListener
-@Component
 public class RabbimtMQCloudEventListener extends CloudEventListener{
 
 

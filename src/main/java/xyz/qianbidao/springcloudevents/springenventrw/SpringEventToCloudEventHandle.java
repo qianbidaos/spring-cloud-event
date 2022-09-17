@@ -85,7 +85,9 @@ public class SpringEventToCloudEventHandle implements ApplicationListener {
                 .build();
         cloudEventSenders.forEach(cloudEventSender -> {
             log.debug("log debug send event {} {}",cloudEventSender.getClass().getName() , cloudEvent);
-            cloudEventSender.send(cloudEvent);
+            try {
+                cloudEventSender.send(cloudEvent);
+            }catch (Exception e){}
         });
     }
 }
