@@ -2,6 +2,9 @@ package xyz.qianbidao.springcloudevents.springenventrw.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +13,10 @@ import org.springframework.context.annotation.Configuration;
 import xyz.qianbidao.springcloudevents.springenventrw.SpringEventToCloudEventHandle;
 import xyz.qianbidao.springcloudevents.springenventrw.entity.SpringCloudEventsConstant;
 import xyz.qianbidao.springcloudevents.springenventrw.sender.RabbitMQSender;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @auther 铅笔刀
@@ -28,7 +35,7 @@ public class CloudEventSendConfig {
 
     @Bean
     @ConditionalOnClass(value = RabbitTemplate.class)
-    public TopicExchange CloudEventExchange() {
+    public TopicExchange cloudEventExchange() {
         return new TopicExchange(SpringCloudEventsConstant.CLOUD_EVENT_EXCHANGE, true, false);
     }
 
@@ -37,4 +44,6 @@ public class CloudEventSendConfig {
     public SpringEventToCloudEventHandle springEventToCloudEventHandle(){
         return new SpringEventToCloudEventHandle();
     }
+
+
 }

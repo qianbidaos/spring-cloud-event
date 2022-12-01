@@ -1,16 +1,11 @@
 package xyz.qianbidao.springcloudevents.springenventrw.eventhandle;
 
-import com.alibaba.fastjson.JSON;
 import io.cloudevents.CloudEvent;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.event.ApplicationPreparedEvent;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.event.ContextClosedEvent;
-import org.springframework.stereotype.Component;
 import xyz.qianbidao.springcloudevents.springenventrw.entity.ApplicationCloudJSONDataEvent;
 
 @Slf4j
-public class CloudEventHandle implements EventHandle<ApplicationCloudJSONDataEvent>{
+public class CloudEventHandle implements EventHandle<CloudEvent>{
 
 
     @Override
@@ -19,7 +14,12 @@ public class CloudEventHandle implements EventHandle<ApplicationCloudJSONDataEve
     }
 
     @Override
-    public void handle(ApplicationCloudJSONDataEvent cloudEvent) {
+    public String getSource() {
+        return "#";
+    }
+
+    @Override
+    public void handle(CloudEvent cloudEvent) {
         log.info("cloudEvent {}",cloudEvent);
     }
 }

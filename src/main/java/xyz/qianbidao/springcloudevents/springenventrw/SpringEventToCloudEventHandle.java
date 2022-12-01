@@ -10,21 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 import xyz.qianbidao.springcloudevents.springenventrw.config.EventsConfig;
 import xyz.qianbidao.springcloudevents.springenventrw.entity.ApplicationCloudJSONDataEvent;
 import xyz.qianbidao.springcloudevents.springenventrw.entity.SystemEvent;
 import xyz.qianbidao.springcloudevents.springenventrw.sender.CloudEventSender;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 /**
  * @auther 铅笔刀

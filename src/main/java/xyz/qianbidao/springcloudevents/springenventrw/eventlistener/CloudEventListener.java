@@ -4,13 +4,12 @@ import com.alibaba.fastjson.JSON;
 import io.cloudevents.CloudEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import xyz.qianbidao.springcloudevents.springenventrw.entity.ApplicationCloudJSONDataEvent;
+import xyz.qianbidao.springcloudevents.springenventrw.config.EventsConfig;
+import xyz.qianbidao.springcloudevents.springenventrw.entity.SpringCloudEventsConstant;
 import xyz.qianbidao.springcloudevents.springenventrw.eventhandle.EventHandle;
-import xyz.qianbidao.springcloudevents.springenventrw.sender.CloudEventSender;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @auther 铅笔刀
@@ -20,22 +19,21 @@ public class CloudEventListener {
 
     @Autowired
     private ApplicationContext applicationContext;
-    private Collection<EventHandle> eventHandles;
+    protected Collection<EventHandle> eventHandles;
+
+    @Autowired
+    private EventsConfig eventsConfig;
 
     @PostConstruct
     public void init(){
         eventHandles = applicationContext.getBeansOfType(EventHandle.class).values();
     }
 
-    public void handle(CloudEvent e){
+    public void handle(CloudEvent e, String consumerQueueName){
         eventHandles.forEach(eventHandle -> {
             if (eventHandle.getKey() != null) {
-                if(eventHandle.getKey().equals(e.getType())){
-                    if (null == e.getDataContentType()) {
-                        eventHandle.handle(e);
-                    }else {
-                        eventHandle.handle(JSON.parseObject(new String(e.getData().toBytes())).toJavaObject(eventHandle.getType()));
-                    }
+                if(eventHandle.getKey().equals(consumerQueueName.replaceFirst(eventsConfig.getApplicationSource()+ SpringCloudEventsConstant.DIVISION,""))){
+                    eventHandle.handle(e);
                 }
             }else if (eventHandle.getType() != null) {
                 Class<?> clazz = null;
@@ -45,11 +43,7 @@ public class CloudEventListener {
                     return;
                 }
                 if (clazz.isAssignableFrom(eventHandle.getType())) {
-                    if (null == e.getDataContentType()) {
-                        eventHandle.handle(e);
-                    } else {
-                        eventHandle.handle(JSON.parseObject(new String(e.getData().toBytes())).toJavaObject(clazz));
-                    }
+                    eventHandle.handle(e);
                 }
             }
 

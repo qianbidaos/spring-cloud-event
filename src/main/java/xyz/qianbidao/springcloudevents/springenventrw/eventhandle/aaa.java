@@ -16,6 +16,7 @@ public class aaa implements ApplicationRunner {
 
     @Autowired
     ApplicationEventPublisher applicationEventPublisher;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         ApplicationCloudJSONDataEvent applicationCloudJSONDataEvent = new ApplicationCloudJSONDataEvent("21231", JSON.toJSONString(this));

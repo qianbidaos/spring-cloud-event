@@ -1,6 +1,10 @@
 cloudevent:
   applicationSource: xyz.qianbidao.events
 spring:
+#  application:
+#    name: 12121
   rabbitmq:
-    host: 61.183.41.134
-    port: 5673
+    host: 121.62.16.9
+    port: 30446
+    username: qianbidao
+    password: 286148496Fsf
